@@ -1,5 +1,5 @@
-const BACKEND_URL = 'https://media-downloader-web-app.onrender.com'; // Update this for production
-const WORKER_TOKEN = '12345'; // Set if needed
+const BACKEND_URL = ''; // Update this for production
+const WORKER_TOKEN = ''; // Set if needed
 
 // State
 let currentAnalyzeResult = null;
