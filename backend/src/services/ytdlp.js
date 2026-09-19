@@ -1,10 +1,18 @@
 const { execFile } = require('child_process');
 const { promisify } = require('util');
+const fs = require('fs');
+const path = require('path');
 
 const execFileAsync = promisify(execFile);
+const cookiesPath = path.join(__dirname, '../../cookies.txt');
+const hasCookies = fs.existsSync(cookiesPath);
+
+function getBaseArgs() {
+  return hasCookies ? ['--cookies', cookiesPath] : [];
+}
 
 async function analyzeUrl(url) {
-  const { stdout } = await execFileAsync('yt-dlp', ['-J', '--flat-playlist', url]);
+  const { stdout } = await execFileAsync('yt-dlp', [...getBaseArgs(), '-J', '--flat-playlist', url]);
   const data = JSON.parse(stdout);
   
   const isPlaylist = 'entries' in data;
@@ -35,7 +43,7 @@ async function analyzeUrl(url) {
 }
 
 async function getFormats(url) {
-  const { stdout } = await execFileAsync('yt-dlp', ['-J', url]);
+  const { stdout } = await execFileAsync('yt-dlp', [...getBaseArgs(), '-J', url]);
   const data = JSON.parse(stdout);
   const formats = (data.formats || []).map(f => ({
     format_id: f.format_id,
@@ -53,6 +61,7 @@ async function getFormats(url) {
 
 function buildDownloadCommand(url, mode, customFormat, playlistItems) {
   const cmd = [
+    ...getBaseArgs(),
     '--no-overwrites',
     '--continue',
     '--ignore-errors',
