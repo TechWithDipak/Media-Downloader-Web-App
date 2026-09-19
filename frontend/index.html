@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Media Downloader</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#121212">
+</head>
+<body class="dark-mode">
+  <div class="app-container">
+    <header>
+      <h1>Media Downloader</h1>
+      <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme">
+        <!-- SVG for Moon/Sun injected via JS -->
+      </button>
+    </header>
+
+    <main>
+      <!-- SECTION: URL Input -->
+      <section id="input-section" class="card">
+        <h2>Enter URL</h2>
+        <form id="url-form">
+          <div class="input-group">
+            <input type="url" id="url-input" placeholder="https://www.youtube.com/watch?v=..." required>
+            <button type="button" id="paste-btn" class="icon-btn" aria-label="Paste">📋</button>
+          </div>
+          <button type="submit" class="btn primary" id="analyze-btn">Analyze</button>
+        </form>
+        <div id="analyze-loader" class="hidden">
+          <div class="spinner"></div>
+          <p>Analyzing URL...</p>
+        </div>
+        <div id="error-message" class="error hidden"></div>
+      </section>
+
+      <!-- SECTION: Result Details -->
+      <section id="result-section" class="card hidden">
+        <div class="result-header">
+          <img id="result-thumb" src="" alt="Thumbnail" class="thumbnail hidden">
+          <div class="result-info">
+            <h3 id="result-title"></h3>
+            <p id="result-uploader"></p>
+            <p id="result-meta"></p>
+          </div>
+        </div>
+
+        <!-- Playlist Items (hidden for single video) -->
+        <div id="playlist-container" class="hidden mt-4">
+          <div class="playlist-controls">
+            <span>Select items:</span>
+            <button type="button" id="select-all-btn" class="btn small">All</button>
+            <button type="button" id="select-none-btn" class="btn small">None</button>
+            <input type="text" id="range-input" placeholder="e.g. 1,3,5-8" class="range-input">
+          </div>
+          <p id="selection-count" class="text-sm mt-2"></p>
+          <div id="playlist-items" class="items-list">
+            <!-- Checkboxes injected here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: Mode Picker -->
+      <section id="config-section" class="card hidden">
+        <h2>Download Mode</h2>
+        <div class="mode-grid" id="mode-grid">
+          <!-- Modes injected here -->
+        </div>
+
+        <div class="custom-format-container mt-4">
+          <label for="custom-format">Custom Format ID (optional):</label>
+          <div class="input-group">
+            <input type="text" id="custom-format" placeholder="e.g. 140 or 137+140">
+            <button type="button" id="show-formats-btn" class="btn outline">Show Formats</button>
+          </div>
+        </div>
+
+        <button type="button" id="start-download-btn" class="btn primary full-width mt-4">Start Download</button>
+      </section>
+
+      <!-- SECTION: Download Progress -->
+      <section id="download-section" class="card hidden">
+        <h2>Downloading...</h2>
+        <div class="progress-container mt-4">
+          <div class="progress-bar">
+            <div id="progress-fill" class="progress-fill"></div>
+          </div>
+          <div class="progress-stats">
+            <span id="progress-percent">0%</span>
+            <span id="progress-speed">--</span>
+            <span id="progress-eta">--</span>
+          </div>
+        </div>
+
+        <div id="download-status" class="mt-2 text-center text-sm">Initializing...</div>
+
+        <details class="log-details mt-4">
+          <summary>Raw Log</summary>
+          <pre id="raw-log" class="log-content"></pre>
+        </details>
+
+        <button type="button" id="cancel-btn" class="btn danger full-width mt-4">Cancel Download</button>
+      </section>
+
+      <!-- SECTION: Completion -->
+      <section id="complete-section" class="card hidden">
+        <h2>Download Complete</h2>
+        <div id="completion-summary" class="mt-2 text-center"></div>
+        
+        <div id="downloaded-files" class="items-list mt-4">
+          <!-- File links injected here -->
+        </div>
+
+        <button type="button" id="download-zip-btn" class="btn primary full-width mt-4 hidden">Download All as ZIP</button>
+        <button type="button" id="new-download-btn" class="btn outline full-width mt-2">New Download</button>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Formats Modal -->
+  <div id="formats-modal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Available Formats</h2>
+        <button id="close-modal-btn" class="icon-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="formats-loader" class="text-center py-4">Loading formats...</div>
+        <div class="table-responsive">
+          <table id="formats-table" class="hidden">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Ext</th>
+                <th>Res</th>
+                <th>Note</th>
+                <th>Size</th>
+              </tr>
+            </thead>
+            <tbody id="formats-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

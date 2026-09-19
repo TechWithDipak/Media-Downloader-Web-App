@@ -1,0 +1,11 @@
+# Node dependencies
+node_modules/
+
+# Downloads
+backend/downloads/
+
+# Environment variables
+.env
+
+# MacOS
+.DS_Store
