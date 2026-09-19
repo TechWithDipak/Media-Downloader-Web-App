@@ -1,4 +1,4 @@
-const BACKEND_URL = 'https://media-downloader-web-app.onrender.com/'; // Update this for production
+const BACKEND_URL = 'https://media-downloader-web-app.onrender.com'; // Update this for production
 const WORKER_TOKEN = ''; // Set if needed
 
 // State
